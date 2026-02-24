@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="nl">
+  <head>
+
+    <!-- Favicons - Plak dit in de <head> van je HTML -->
+
+    <!-- Standard favicons -->
+    <link rel="icon" type="image/png" sizes="16x16" href="https://i.ibb.co/fzCrhw8T/favicon-16x16-png.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://i.ibb.co/zWpnCLSj/favicon-32x32-png.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="https://i.ibb.co/Mx28fG0V/favicon-48x48-png.png">
+
+    <!-- Apple Touch Icon (iOS) -->
+    <link rel="apple-touch-icon" sizes="180x180" href="https://i.ibb.co/201BRK7k/apple-touch-icon-png.png">
+
+    <!-- Android Chrome -->
+    <link rel="icon" type="image/png" sizes="192x192" href="https://i.ibb.co/7NVGnWss/android-chrome-192x192-png.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="https://i.ibb.co/WWc6mSRW/android-chrome-512x512-png.png">
+
+    <!-- Standaard fallback -->
+    <link rel="shortcut icon" href="https://i.ibb.co/zWpnCLSj/favicon-32x32-png.png">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MovieSearcher</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Newsreader:opsz,wght@6..72,500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <section class="hero">
+        <p class="kicker">MovieSearcher</p>
+        <h1>Zoek films en series met hun streamingdiensten</h1>
+        <p class="subtext">Gebruik TMDB-data om snel te zien waar je kunt kijken.</p>
+      </section>
+
+      <section class="search-panel">
+        <form id="searchForm" class="search-form">
+          <input
+            id="searchInput"
+            type="text"
+            name="query"
+            placeholder="Bijv. Dune, The Office, Parasite..."
+            required
+          />
+          <button type="submit">Zoeken</button>
+        </form>
+      </section>
+
+      <p id="status" class="status">Zoek naar een titel om te beginnen.</p>
+      <section id="results" class="results" aria-live="polite"></section>
+    </main>
+
+    <template id="cardTemplate">
+      <article class="card">
+        <div class="poster-wrap">
+          <img class="poster" alt="" loading="lazy" />
+        </div>
+        <div class="card-content">
+          <header>
+            <h2 class="title"></h2>
+            <p class="meta"></p>
+          </header>
+          <p class="description"></p>
+          <p class="countries"></p>
+          <div class="providers"></div>
+          <div class="card-actions">
+            <button class="details-btn" type="button">Alles tonen</button>
+          </div>
+        </div>
+      </article>
+    </template>
+
+    <dialog id="detailsModal" class="details-modal">
+      <article class="details-content">
+        <button id="closeDetailsModal" class="close-modal" type="button" aria-label="Sluiten">Sluiten</button>
+        <div class="details-header">
+          <img id="detailsPoster" class="details-poster" alt="" />
+          <div>
+            <h3 id="detailsTitle"></h3>
+            <p id="detailsMeta"></p>
+            <p id="detailsDescription"></p>
+          </div>
+        </div>
+        <section class="country-checker">
+          <p class="country-checker-title">Is deze film/serie in jouw land beschikbaar?</p>
+          <form id="countryCheckForm" class="country-check-form">
+            <input id="countryCheckInput" type="text" placeholder="Zoek een land, bijv. Nederland" list="countrySuggestions" />
+            <button type="submit">Check land</button>
+          </form>
+          <datalist id="countrySuggestions"></datalist>
+          <p id="countryCheckResult" class="country-check-result"></p>
+        </section>
+        <section id="detailsSubscriptionSection">
+          <h4>Streamingdiensten</h4>
+          <div id="detailsSubscriptionProviders" class="details-chips"></div>
+        </section>
+        <section id="detailsRentSection" hidden>
+          <h4>Huurdiensten</h4>
+          <ul id="detailsRentProviders" class="details-list"></ul>
+          <p class="price-note">Prijs per dienst wisselt; check actuele prijs in de app van de provider.</p>
+        </section>
+        <section id="detailsBuySection" hidden>
+          <h4>Koopdiensten</h4>
+          <div id="detailsBuyProviders" class="details-chips"></div>
+        </section>
+      </article>
+    </dialog>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>
