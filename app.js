@@ -19,11 +19,13 @@ const detailsBuyProviders = document.getElementById('detailsBuyProviders');
 const countryCheckForm = document.getElementById('countryCheckForm');
 const countryCheckInput = document.getElementById('countryCheckInput');
 const countryCheckResult = document.getElementById('countryCheckResult');
-const API_BASES = [
+const configuredApiBase = String(window.APP_API_BASE || '').replace(/\/+$/, '');
+const API_BASES = [...new Set([
+  configuredApiBase,
   '',
   `${window.location.protocol}//127.0.0.1:3000`,
   `${window.location.protocol}//localhost:3000`,
-];
+].filter(Boolean))];
 
 const fallbackPoster =
   'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="342" height="513"><rect width="100%" height="100%" fill="%23dedede"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23666" font-family="Arial" font-size="22">No Poster</text></svg>';
@@ -254,7 +256,7 @@ async function fetchFromBackend(query) {
   }
 
   throw new Error(
-    `Backend niet bereikbaar op poort 3000. Start node server.js. Laatste fout: ${lastError}`
+    `Backend niet bereikbaar. Zet window.APP_API_BASE in public/config.js naar je live backend URL. Laatste fout: ${lastError}`
   );
 }
 
