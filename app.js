@@ -13,7 +13,7 @@ const countrySuggestions = document.getElementById('countrySuggestions');
 const detailsSubscriptionSection = document.getElementById('detailsSubscriptionSection');
 const detailsSubscriptionProviders = document.getElementById('detailsSubscriptionProviders');
 const detailsRentSection = document.getElementById('detailsRentSection');
-const detailsRentProviders = document.getElementById('detailsRentProviders');
+const detailsRentMessage = document.getElementById('detailsRentMessage');
 const detailsBuySection = document.getElementById('detailsBuySection');
 const detailsBuyProviders = document.getElementById('detailsBuyProviders');
 const countryCheckForm = document.getElementById('countryCheckForm');
@@ -128,17 +128,15 @@ function openDetailsModal(item) {
 
   detailsSubscriptionSection.hidden = false;
 
-  detailsRentProviders.innerHTML = '';
   const rentItems = details.rentProviders || [];
-  if (rentItems.length) {
+  if (!subscriptionList.length && rentItems.length) {
     detailsRentSection.hidden = false;
-    for (const provider of rentItems) {
-      const li = document.createElement('li');
-      li.textContent = `${provider.name} - prijs: verschilt per titel/regio`;
-      detailsRentProviders.appendChild(li);
-    }
+    const providerNames = rentItems.slice(0, 4).map((provider) => provider.name).join(', ');
+    const extraCount = rentItems.length > 4 ? ` +${rentItems.length - 4} meer` : '';
+    detailsRentMessage.textContent = `Alleen te huur via: ${providerNames}${extraCount}. Prijs verschilt per titel/regio.`;
   } else {
     detailsRentSection.hidden = true;
+    detailsRentMessage.textContent = '';
   }
 
   const buyItems = details.buyProviders || [];
@@ -203,7 +201,7 @@ function renderCards(items) {
       noProviders.textContent = 'Geen streaming-info';
       providersWrap.appendChild(noProviders);
     } else {
-      const visibleProviders = item.providers.slice(0, 6);
+      const visibleProviders = item.providers.slice(0, 3);
       for (const provider of visibleProviders) {
         providersWrap.appendChild(createProviderChip(provider));
       }
@@ -215,15 +213,6 @@ function renderCards(items) {
         more.addEventListener('click', () => openDetailsModal(item));
         providersWrap.appendChild(more);
       }
-    }
-
-    if (item.streamingCountries.length > 6) {
-      const countryMore = document.createElement('button');
-      countryMore.type = 'button';
-      countryMore.className = 'provider-chip more-chip';
-      countryMore.textContent = `+${item.streamingCountries.length - 6} landen`;
-      countryMore.addEventListener('click', () => openDetailsModal(item));
-      providersWrap.appendChild(countryMore);
     }
 
     detailsButton.addEventListener('click', () => openDetailsModal(item));
